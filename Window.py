@@ -11,7 +11,8 @@ class Window(QWidget):
         self.setupUI()
 
     def setupUI(self):
-        self.setGeometry(800, 200, 300, 300)
+        self.setGeometry(800, 200, 800, 500)
+        self.setFixedSize(800, 500)
         self.setWindowTitle("Image Distributor v0.0.1 For UHwan")
 
         self.sourceDirectorySelectButton = QPushButton("이미지 폴더 선택")
