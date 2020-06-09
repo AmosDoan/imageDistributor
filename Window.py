@@ -13,7 +13,7 @@ class Window(QWidget):
     def setupUI(self):
         self.setGeometry(800, 200, 800, 500)
         self.setFixedSize(800, 500)
-        self.setWindowTitle("Image Distributor v0.0.1 For UHwan")
+        self.setWindowTitle("Image Distributor v0.0.2 For UHwan")
 
         self.sourceDirectorySelectButton = QPushButton("이미지 폴더 선택")
         self.sourceDirectorySelectButton.clicked.connect(self.sourceDirectorySelectButtonClicked)
@@ -26,6 +26,7 @@ class Window(QWidget):
 
         self.instagramIdLabel = QLabel("인스타 그램 계정 명 - 콤마(,)로 구분 : ")
         self.instagramId = QLineEdit()
+        self.numberOfFiles = QLabel("분배할 파일 수 : 0")
 
         self.startButton = QPushButton("생성하기")
         self.startButton.clicked.connect(self.startButtonClicked)
@@ -37,6 +38,7 @@ class Window(QWidget):
         layout.addWidget(self.targetDirectoryLabel)
         layout.addWidget(self.instagramIdLabel)
         layout.addWidget(self.instagramId)
+        layout.addWidget(self.numberOfFiles)
         layout.addWidget(self.startButton)
 
         self.setLayout(layout)
@@ -53,7 +55,7 @@ class Window(QWidget):
             return
 
         self.files = [f for f in listdir(self.sourceDir) if isfile(join(self.sourceDir, f))]
-        self.instagramIdLabel.setText("분배할 파일 수 : " + str(len(self.files)))
+        self.numberOfFiles.setText("분배할 파일 수 : " + str(len(self.files)))
         self.sourceDirectoryLabel.setText("선택된 이미지 폴더 : " + self.sourceDir)
 
 
@@ -90,5 +92,14 @@ class Window(QWidget):
                 msg.exec_()
                 return
 
-        self.distributor.distribute(self.files, self.sourceDir, self.targetDir, instagramIdList)
+        try:
+            self.distributor.distribute(self.files, self.sourceDir, self.targetDir, instagramIdList)
+        except FileExistsError:
+            msg = QMessageBox()
+            msg.setText("이미 폴더가 존재합니다.")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
+            return
+
+
 
