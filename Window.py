@@ -24,10 +24,8 @@ class Window(QWidget):
         self.sourceDirectoryLabel = QLabel("선택된 이미지 폴더 : ")
         self.targetDirectoryLabel = QLabel("선택된 타겟 폴더 : ")
 
-        self.numberOfDirectory = QLineEdit()
-        self.numberOfDirectory.setValidator(QIntValidator())
-
-        self.numberOfImageFilesLabel = QLabel("분배할 파일 수 : ")
+        self.instagramIdLabel = QLabel("인스타 그램 계정 명 - 콤마(,)로 구분 : ")
+        self.instagramId = QLineEdit()
 
         self.startButton = QPushButton("생성하기")
         self.startButton.clicked.connect(self.startButtonClicked)
@@ -37,8 +35,8 @@ class Window(QWidget):
         layout.addWidget(self.targetDirectorySelectButton)
         layout.addWidget(self.sourceDirectoryLabel)
         layout.addWidget(self.targetDirectoryLabel)
-        layout.addWidget(self.numberOfImageFilesLabel)
-        layout.addWidget(self.numberOfDirectory)
+        layout.addWidget(self.instagramIdLabel)
+        layout.addWidget(self.instagramId)
         layout.addWidget(self.startButton)
 
         self.setLayout(layout)
@@ -55,7 +53,7 @@ class Window(QWidget):
             return
 
         self.files = [f for f in listdir(self.sourceDir) if isfile(join(self.sourceDir, f))]
-        self.numberOfImageFilesLabel.setText("분배할 파일 수 : " + str(len(self.files)))
+        self.instagramIdLabel.setText("분배할 파일 수 : " + str(len(self.files)))
         self.sourceDirectoryLabel.setText("선택된 이미지 폴더 : " + self.sourceDir)
 
 
@@ -75,13 +73,22 @@ class Window(QWidget):
             msg.exec_()
             return
 
-        numberOfDirectory = int(self.numberOfDirectory.text())
+        instagramIdList = self.instagramId.text().split(',')
+        numberOfDirectory = len(instagramIdList)
         if numberOfDirectory > len(self.files):
             msg = QMessageBox()
-            msg.setText("폴더 수는 파일 수보다 클 수 없습니다. ")
+            msg.setText("인스타그램 계정 수는 파일 수보다 클 수 없습니다. ")
             msg.setStandardButtons(QMessageBox.Ok)
             msg.exec_()
             return
 
-        self.distributor.distribute(self.files, self.sourceDir, self.targetDir, numberOfDirectory)
+        for instagramId in instagramIdList:
+            if instagramId == '':
+                msg = QMessageBox()
+                msg.setText("공백인 인스타그램 계정이 있습니다.")
+                msg.setStandardButtons(QMessageBox.Ok)
+                msg.exec_()
+                return
+
+        self.distributor.distribute(self.files, self.sourceDir, self.targetDir, instagramIdList)
 

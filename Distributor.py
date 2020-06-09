@@ -3,10 +3,10 @@ import random
 import shutil
 
 class Distributor:
-    def distribute(self, files, sourcePath, targetDirPath, numberOfDirectory):
+    def distribute(self, files, sourcePath, targetDirPath, instagramIdList):
         random.shuffle(files)
 
-        targetPaths = [targetDirPath + "/" + str(i) for i in range(1, numberOfDirectory + 1)]
+        targetPaths = [targetDirPath + "/" + instagramId for instagramId in instagramIdList]
         for path in targetPaths:
             mkdir(path)
 
