@@ -1,12 +1,13 @@
 from os import listdir
 from os.path import isfile, join
-from PyQt5.QtGui import QIntValidator
+
 from PyQt5.QtWidgets import *
+
+from DistributorDialog import DistributorDialog
 
 
 class Window(QWidget):
-    def __init__(self, distributor):
-        self.distributor = distributor
+    def __init__(self):
         super().__init__()
         self.setupUI()
 
@@ -31,15 +32,15 @@ class Window(QWidget):
         self.startButton = QPushButton("생성하기")
         self.startButton.clicked.connect(self.startButtonClicked)
 
-        layout = QVBoxLayout()
-        layout.addWidget(self.sourceDirectorySelectButton)
-        layout.addWidget(self.targetDirectorySelectButton)
-        layout.addWidget(self.sourceDirectoryLabel)
-        layout.addWidget(self.targetDirectoryLabel)
-        layout.addWidget(self.instagramIdLabel)
-        layout.addWidget(self.instagramId)
-        layout.addWidget(self.numberOfFiles)
-        layout.addWidget(self.startButton)
+        layout = QGridLayout()
+        layout.addWidget(self.sourceDirectoryLabel, 0, 0, 1, 2)
+        layout.addWidget(self.targetDirectoryLabel, 1, 0, 1, 2)
+        layout.addWidget(self.instagramIdLabel, 2, 0)
+        layout.addWidget(self.instagramId, 2, 1, 1, 2)
+        layout.addWidget(self.numberOfFiles, 3, 0)
+        layout.addWidget(self.sourceDirectorySelectButton, 4, 0)
+        layout.addWidget(self.targetDirectorySelectButton, 4, 1)
+        layout.addWidget(self.startButton, 4, 2)
 
         self.setLayout(layout)
 
@@ -92,14 +93,8 @@ class Window(QWidget):
                 msg.exec_()
                 return
 
-        try:
-            self.distributor.distribute(self.files, self.sourceDir, self.targetDir, instagramIdList)
-        except FileExistsError:
-            msg = QMessageBox()
-            msg.setText("이미 폴더가 존재합니다.")
-            msg.setStandardButtons(QMessageBox.Ok)
-            msg.exec_()
-            return
+        distributorDialog = DistributorDialog(self.files, self.sourceDir, self.targetDir, instagramIdList)
+        distributorDialog.exec_()
 
 
 
