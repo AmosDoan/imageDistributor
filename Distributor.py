@@ -1,5 +1,6 @@
 import random
 import shutil
+import os.path
 from os import mkdir
 
 from PyQt5.QtCore import QRunnable
@@ -30,7 +31,7 @@ class Distributor(QRunnable):
 
         i = 0
         for file in self.files:
-            fileExtension = file.split('.')[1]
+            fileExtension = os.path.splitext(file)[1]
             sourceFile = self.sourcePath + "/" + file
             copyFile = targetPaths[i] + "/" + self.instagramIdList[i] + str(targetIndex[i]) + '.' + fileExtension
             shutil.copy2(sourceFile, copyFile)
