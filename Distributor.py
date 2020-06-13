@@ -33,7 +33,7 @@ class Distributor(QRunnable):
         for file in self.files:
             fileExtension = os.path.splitext(file)[1]
             sourceFile = self.sourcePath + "/" + file
-            copyFile = targetPaths[i] + "/" + self.instagramIdList[i] + str(targetIndex[i]) + '.' + fileExtension
+            copyFile = targetPaths[i] + "/" + self.instagramIdList[i] + str(targetIndex[i]) + fileExtension
             shutil.copy2(sourceFile, copyFile)
             targetIndex[i] = targetIndex[i] + 1
 

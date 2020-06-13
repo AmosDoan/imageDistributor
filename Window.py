@@ -1,6 +1,7 @@
 from os import listdir
 from os.path import isfile, join
 
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 
 from DistributorDialog import DistributorDialog
@@ -14,7 +15,8 @@ class Window(QWidget):
     def setupUI(self):
         self.setGeometry(800, 200, 800, 500)
         self.setFixedSize(800, 500)
-        self.setWindowTitle("Image Distributor v0.0.2 For UHwan")
+        self.setWindowTitle("Image Distributor v0.0.3 For UHwan")
+        self.setWindowIcon(QIcon("resources/imageDistributor.ico"))
 
         self.sourceDirectorySelectButton = QPushButton("이미지 폴더 선택")
         self.sourceDirectorySelectButton.clicked.connect(self.sourceDirectorySelectButtonClicked)
@@ -95,6 +97,3 @@ class Window(QWidget):
 
         distributorDialog = DistributorDialog(self.files, self.sourceDir, self.targetDir, instagramIdList)
         distributorDialog.exec_()
-
-
-

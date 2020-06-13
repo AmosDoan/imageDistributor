@@ -1,3 +1,4 @@
+from PyQt5 import QtCore
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import *
 
@@ -15,9 +16,10 @@ class DistributorDialog(QDialog):
         self.setupUI()
 
     def setupUI(self):
+        self.setWindowFlags(self.windowFlags() ^ QtCore.Qt.WindowContextHelpButtonHint)
         self.setGeometry(800, 200, 800, 500)
-        self.setFixedSize(200, 100)
-        self.setWindowTitle("Copying")
+        self.setFixedSize(400, 100)
+        self.setWindowTitle("ImageDistributor Processing")
         self.progress = QLabel("진행 중")
 
         layout = QGridLayout()
